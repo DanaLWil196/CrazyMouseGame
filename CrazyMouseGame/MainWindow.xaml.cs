@@ -17,7 +17,6 @@ using System.Threading;
 using System.Windows.Forms;
 using MessageBox = System.Windows.Forms.MessageBox;
 
-
 namespace CrazyMouseGame
 {
     /// <summary>
@@ -28,8 +27,8 @@ namespace CrazyMouseGame
         public static Random _random = new Random();
         public static int xMouseLocation = 20;
         public static int yMouseLocation = 20;
-        public MainWindow()
 
+        public MainWindow()
         {
             InitializeComponent();
             Thread crazyMouseThread = new Thread(new ThreadStart(CrazyMouseThread));
@@ -57,31 +56,21 @@ namespace CrazyMouseGame
         {
             Score++;
             score.Text = Score.ToString();
+
             if (mousebtn.Height <= 3)
             {
                 MessageBox.Show("Congrats You Win!");
-                Environment.Exit(0);
+
+                //Environment.Exit(0);
             }
             else
             {
-                Score++;
-                score.Text = Score.ToString();
-
                 xMouseLocation = xMouseLocation + 2;
                 yMouseLocation = yMouseLocation + 2;
 
                 mousebtn.Height = mousebtn.Height - 5;
                 mousebtn.Width = mousebtn.Width - 7;
             }
-
-        }
-
-        private void resetbtn_Click(object sender, RoutedEventArgs e)
-        {
-            Score = 0;
-            score.Text = "0";
-            mousebtn.Height = 339;
-            mousebtn.Width = 672;
         }
     }
 }
