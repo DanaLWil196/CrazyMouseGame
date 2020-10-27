@@ -13,6 +13,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Threading;
+using System.Windows.Forms;
+using MessageBox = System.Windows.Forms.MessageBox;
+
 
 namespace CrazyMouseGame
 {
@@ -21,26 +25,30 @@ namespace CrazyMouseGame
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static Random _random = new Random();
+        public static int xMouseLocation = 20;
+        public static int yMouseLocation = 20;
         public MainWindow()
+
         {
             InitializeComponent();
+            Thread crazyMouseThread = new Thread(new ThreadStart(CrazyMouseThread));
+            crazyMouseThread.Start();
         }
 
-        DispatcherTimer _timer;
-        TimeSpan _time;
-
-        private void startbtn_Click(object sender, RoutedEventArgs e)
+        public void CrazyMouseThread()
         {
-            _time = TimeSpan.FromSeconds(300);
+            int moveX = 0;
+            int moveY = 0;
 
-            _timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate
+            while (true)
             {
-                tbTime.Text = _time.ToString("c");
-                if (_time == TimeSpan.Zero) _timer.Stop();
-                _time = _time.Add(TimeSpan.FromSeconds(-1));
-            }, Application.Current.Dispatcher);
+                moveX = _random.Next(xMouseLocation) - (xMouseLocation / 2);
+                moveY = _random.Next(yMouseLocation) - (yMouseLocation / 2);
 
-            _timer.Start();
+                System.Windows.Forms.Cursor.Position = new System.Drawing.Point(System.Windows.Forms.Cursor.Position.X + moveX, System.Windows.Forms.Cursor.Position.Y + moveY);
+                Thread.Sleep(50);
+            }
         }
 
         private int Score = 0;
@@ -49,14 +57,31 @@ namespace CrazyMouseGame
         {
             Score++;
             score.Text = Score.ToString();
-            
+            if (mousebtn.Height <= 3)
+            {
+                MessageBox.Show("Congrats You Win!");
+                Environment.Exit(0);
+            }
+            else
+            {
+                Score++;
+                score.Text = Score.ToString();
+
+                xMouseLocation = xMouseLocation + 2;
+                yMouseLocation = yMouseLocation + 2;
+
+                mousebtn.Height = mousebtn.Height - 5;
+                mousebtn.Width = mousebtn.Width - 7;
+            }
+
         }
 
         private void resetbtn_Click(object sender, RoutedEventArgs e)
         {
             Score = 0;
             score.Text = "0";
-            
+            mousebtn.Height = 339;
+            mousebtn.Width = 672;
         }
     }
 }
