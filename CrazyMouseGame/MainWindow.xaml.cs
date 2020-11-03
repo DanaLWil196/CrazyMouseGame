@@ -82,7 +82,8 @@ namespace CrazyMouseGame
                     string FileName = "Scores.xml";
                     TextWriter writer = new StreamWriter(FilePath + FileName);
                     //needs to record score that has been made, along with player's name and both added to a document file//
-
+                    PlayerName = Interaction.InputBox("What is your name?", "Beaten The High Score, Great Job!", "");
+                    Score = PreviousScore;
                     XmlSerializer ser = new XmlSerializer(typeof(Employee));
                     ser.Serialize(writer, emp);
                     writer.Close();

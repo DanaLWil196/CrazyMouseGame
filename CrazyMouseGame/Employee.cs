@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace CrazyMouseGame
 {
     public class Employee
     {
-        public int PlayerName { get; set; }
+        private string PlayerName { get; set; }
+        private int PreviousScore { get; set; }
     }
 }
