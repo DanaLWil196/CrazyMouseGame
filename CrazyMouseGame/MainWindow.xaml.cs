@@ -16,13 +16,19 @@ using System.Windows.Shapes;
 using System.Threading;
 using System.Windows.Forms;
 using MessageBox = System.Windows.Forms.MessageBox;
+using System.IO;
+using Microsoft.VisualBasic;
+using System.Xml.Serialization;
+using System.Xml;
 
 namespace CrazyMouseGame
 {
     public partial class MainWindow : Window
     {
+        Employee emp = new Employee();
         public static Random _random = new Random();
         private int Score = 0;
+        private string PlayerName = "";
         private int PreviousScore = 0;
         public static int xMouseLocation = 20;
         public static int yMouseLocation = 20;
@@ -32,8 +38,7 @@ namespace CrazyMouseGame
         public MainWindow()
         {
             InitializeComponent();
-            //Tet should show High Score that has been made by a player for the new player's to challenge and beat//
-            PastScore.Text = "The previous score is {PreviousScore} by {}.";
+            PastScore.Text = ($"The previous score is {PreviousScore} by {PlayerName}.");
             _time = TimeSpan.FromSeconds(90);
             _timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate
             {
@@ -63,12 +68,24 @@ namespace CrazyMouseGame
         {
             Score++;
             score.Text = Score.ToString();
-            if (mousebtn.Height <= 3)
+            if (mousebtn.Height <= 4)
             {
+                xMouseLocation = xMouseLocation + 0;
+                yMouseLocation = yMouseLocation + 0;
+                mousebtn.Height = mousebtn.Height - 0;
+                mousebtn.Width = mousebtn.Width - 0;
+                _timer.Stop();
                 MessageBox.Show("Congrats You Win!");
                 if (Score > PreviousScore)
                 {
-                    //needs to record score that has been made, along with player's name and both added to file//
+                    string FilePath = "C:/Users/Wilson_dana/source/repos/CrazyMouseGame/";
+                    string FileName = "Scores.xml";
+                    TextWriter writer = new StreamWriter(FilePath + FileName);
+                    //needs to record score that has been made, along with player's name and both added to a document file//
+
+                    XmlSerializer ser = new XmlSerializer(typeof(Employee));
+                    ser.Serialize(writer, emp);
+                    writer.Close();
                 }
                 else
                 {
@@ -80,7 +97,7 @@ namespace CrazyMouseGame
             {
                 xMouseLocation = xMouseLocation + 2;
                 yMouseLocation = yMouseLocation + 2;
-                mousebtn.Height = mousebtn.Height - 5;
+                mousebtn.Height = mousebtn.Height - 4;
                 mousebtn.Width = mousebtn.Width - 7;
             }
         }
