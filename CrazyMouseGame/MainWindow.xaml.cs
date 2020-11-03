@@ -28,8 +28,8 @@ namespace CrazyMouseGame
         Employee emp = new Employee();
         public static Random _random = new Random();
         private int Score = 0;
-        private string PlayerName = "";
-        private int PreviousScore = 0;
+        public string PlayerName = "";
+        public int PreviousScore = 0;
         public static int xMouseLocation = 20;
         public static int yMouseLocation = 20;
         DispatcherTimer _timer;

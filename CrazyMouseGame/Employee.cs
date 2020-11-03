@@ -8,7 +8,7 @@ namespace CrazyMouseGame
 {
     public class Employee
     {
-        private string PlayerName { get; set; }
-        private int PreviousScore { get; set; }
+        public string PlayerName { get; set; }
+        public int PreviousScore { get; set; }
     }
 }
